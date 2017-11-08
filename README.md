@@ -1,3 +1,53 @@
+
+
+# Fork
+
+Fork from http://github.com/moovweb/gvm
+This is a branch from http://github.com/moovweb/gvm
+
+在国内，有些网址不能被访问，所以我修改了脚本，添加了国内使用的支持
+We cannot visit some websites in China. I modify the gvm scripts, add support for gvm use in China.
+
+
+如果不能正常使用，可以发邮件联系我，或者有更好的建议，欢迎参与这个分支的开发。
+If the scripts have any problems, please send an e-mail to me.
+If you have some ideas, please join in this brance.
+
+Email: 759290728@qq.com
+
+Installing gvm 安装gvm
+======================
+To install
+
+    bash < <(curl -s -S -L https://github.com/YMhao/gvm/blob/master/binscripts/gvm-installer)
+
+Or if you are using zsh just change `bash` with `zsh`
+
+
+Installing Go 安装go
+=====================
+    gvm install go1.8.5 -B
+    gvm use go1.8.5 [--default]
+Once this is done Go will be in the path and ready to use. $GOROOT and $GOPATH are set automatically.
+
+Additional options can be specified when installing Go:
+
+    Usage: gvm install [version] [options]
+        -s,  --source=SOURCE      Install Go from specified source.
+        -n,  --name=NAME          Override the default name for this version.
+        -pb, --with-protobuf      Install Go protocol buffers.
+        -b,  --with-build-tools   Install package build tools.
+        -B,  --binary             Only install from binary.
+             --prefer-binary      Attempt a binary install, falling back to source.
+        -h,  --help               Display this message.
+
+
+# http://github.com/moovweb/gvm README.md
+
+下面的文本内容是 http://github.com/moovweb/gvm 的 README.md
+
+The following text is the README.md from http://github.com/moovweb/gvm.
+
 # gvm
 
 [![Build Status](https://travis-ci.org/moovweb/gvm.svg?branch=master)](https://travis-ci.org/moovweb/gvm)
