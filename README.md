@@ -19,7 +19,7 @@ Installing gvm 安装gvm
 ======================
 To install
 
-    bash < <(curl -s -S -L https://github.com/YMhao/gvm/blob/master/binscripts/gvm-installer)
+    bash < <(curl -s -S -L https://raw.githubusercontent.com/YMhao/gvm/master/binscripts/gvm-installer)
 
 Or if you are using zsh just change `bash` with `zsh`
 

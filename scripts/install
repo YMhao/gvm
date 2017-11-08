@@ -62,9 +62,8 @@ download_source() {
 	git clone "$GO_SOURCE_URL" "$GO_CACHE_PATH" >> "$GVM_ROOT/logs/go-download.log"  2>&1
 
 	if [[ $? -ne 0 ]]; then
-		GO_SOURCE_URL_ARRAY
 		GO_SOURCE_URL_ARRAY[0]="https://github.com/golang/go"
-		for GO_BINARY_URL in ${arr[@]};
+		for GO_BINARY_URL in ${GO_SOURCE_URL_ARRAY[@]};
 		do
 			display_message "Download Go Source from $GO_SOURCE_URL"
 			git clone "$GO_SOURCE_URL" "$GO_CACHE_PATH" >> "$GVM_ROOT/logs/go-download.log"  2>&1
@@ -200,20 +199,19 @@ download_binary() {
 		GO_BINARY_FILE=${VERSION}.${GVM_OS}-${GVM_ARCH}.tar.gz
 	fi
 
-	GO_BINARY_URL_ARRAY
-	GO_BINARY_URL_ARRAY[0]="http://golang.org/dl/${GO_BINARY_FILE}"
+	GO_BINARY_URL_ARRAY[0]="https://redirector.gvt1.com/edgedl/go/${GO_BINARY_FILE}"
 	GO_BINARY_URL_ARRAY[1]="https://storage.googleapis.com/golang/${GO_BINARY_FILE}"
-	GO_BINARY_URL_ARRAY[2]="https://redirector.gvt1.com/edgedl/go/${GO_BINARY_FILE}"
+	GO_BINARY_URL_ARRAY[2]="http://golang.org/dl/${GO_BINARY_FILE}"
 
 	GO_BINARY_PATH=${GVM_ROOT}/archive/${GO_BINARY_FILE}
 
 	if [ ! -f $GO_BINARY_PATH ]; then
-		for GO_BINARY_URL in ${arr[@]};
+		for GO_BINARY_URL in ${GO_BINARY_URL_ARRAY[@]};
 		do
-			display_message "Trying" $GO_BINARY_URL
+			display_message "Try to download binary go from  $GO_BINARY_URL"
 			curl -s -f -L $GO_BINARY_URL > ${GO_BINARY_PATH}
 			if [[ $? -ne 0 ]]; then
-				display_error "Failed to download binary go from" $GO_BINARY_URL
+				display_error "Failed to download binary go from $GO_BINARY_URL"
 			else
 				break
 			fi
