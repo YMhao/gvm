@@ -59,8 +59,24 @@ download_source() {
 	GO_CACHE_PATH=$GVM_ROOT/archive/go
 	[[ -d $GO_CACHE_PATH ]] && return
 	display_message "Downloading Go source..."
-	git clone "$GO_SOURCE_URL" "$GO_CACHE_PATH" >> "$GVM_ROOT/logs/go-download.log"  2>&1 ||
-		display_fatal "Couldn't download Go source. Check the logs $GVM_ROOT/logs/go-download.log"
+	git clone "$GO_SOURCE_URL" "$GO_CACHE_PATH" >> "$GVM_ROOT/logs/go-download.log"  2>&1
+
+	if [[ $? -ne 0 ]]; then
+		GO_SOURCE_URL_ARRAY
+		GO_SOURCE_URL_ARRAY[0]="https://github.com/golang/go"
+		for GO_BINARY_URL in ${arr[@]};
+		do
+			display_message "Download Go Source from $GO_SOURCE_URL"
+			git clone "$GO_SOURCE_URL" "$GO_CACHE_PATH" >> "$GVM_ROOT/logs/go-download.log"  2>&1
+			if [[ $? -ne 0 ]]; then
+				display_error "Couldn't download Go source from $GO_SOURCE_URL"
+			fi
+		done
+
+		if [[ $? -ne 0 ]]; then
+			display_fatal "Couldn't download Go source. Check the logs $GVM_ROOT/logs/go-download.log"
+		fi
+	fi
 }
 
 check_tag() {
@@ -183,24 +199,31 @@ download_binary() {
 	else
 		GO_BINARY_FILE=${VERSION}.${GVM_OS}-${GVM_ARCH}.tar.gz
 	fi
-	GO_BINARY_URL="http://golang.org/dl/${GO_BINARY_FILE}"
+
+	GO_BINARY_URL_ARRAY
+	GO_BINARY_URL_ARRAY[0]="http://golang.org/dl/${GO_BINARY_FILE}"
+	GO_BINARY_URL_ARRAY[1]="https://storage.googleapis.com/golang/${GO_BINARY_FILE}"
+	GO_BINARY_URL_ARRAY[2]="https://redirector.gvt1.com/edgedl/go/${GO_BINARY_FILE}"
+
 	GO_BINARY_PATH=${GVM_ROOT}/archive/${GO_BINARY_FILE}
 
 	if [ ! -f $GO_BINARY_PATH ]; then
-		curl -s -f -L $GO_BINARY_URL > ${GO_BINARY_PATH}
+		for GO_BINARY_URL in ${arr[@]};
+		do
+			display_message "Trying" $GO_BINARY_URL
+			curl -s -f -L $GO_BINARY_URL > ${GO_BINARY_PATH}
+			if [[ $? -ne 0 ]]; then
+				display_error "Failed to download binary go from" $GO_BINARY_URL
+			else
+				break
+			fi
+		done
 
 		if [[ $? -ne 0 ]]; then
-			display_error "Failed to download binary go from http://golang.org. Trying https://go.googlecode.com"
-			GO_BINARY_URL="https://go.googlecode.com/files/${GO_BINARY_FILE}"
-
-			curl -s -f -L $GO_BINARY_URL > ${GO_BINARY_PATH}
-
-			if [[ $? -ne 0 ]]; then
-				display_error "Failed to download binary go"
-				rm -rf $GO_INSTALL_ROOT
-				rm -f $GO_BINARY_PATH
-				exit 1
-			fi
+			display_error "Failed to download binary go"
+			rm -rf $GO_INSTALL_ROOT
+			rm -f $GO_BINARY_PATH
+			exit 1
 		fi
 	fi
 
