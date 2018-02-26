@@ -2,17 +2,11 @@
 
 # Fork
 
-Fork from http://github.com/moovweb/gvm
-This is a branch from http://github.com/moovweb/gvm
+Fork from http://github.com/moovweb/gvm    
+This is a branch from http://github.com/moovweb/gvm   
 
-在国内，有些网址不能被访问，所以我修改了脚本，添加了国内使用的支持
-We cannot visit some websites in China. I modify the gvm scripts, add support for gvm use in China.
-
-
-如果不能正常使用，可以发邮件联系我，或者有更好的建议，欢迎参与这个分支的开发。
-If the scripts have any problems, please send an e-mail to me.
-If you have some ideas, please join in this brance.
-
+在国内，有些网址不能被访问，所以我修改了脚本，添加了国内使用的支持。    
+如果不能正常使用，可以发邮件联系我，或者有更好的建议，欢迎参与这个分支的开发。    
 Email: 759290728@qq.com
 
 Installing gvm 安装gvm
